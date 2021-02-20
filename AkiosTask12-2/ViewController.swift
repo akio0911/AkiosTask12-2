@@ -7,11 +7,18 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
+
+    @IBOutlet weak var tasExluededPriceTextField: UITextField!
+    @IBOutlet weak var taxPercentageTextField: UITextField!
+    @IBOutlet weak var taxIncludedPriceLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+    }
+
+    @IBAction func calculateTaxIncludedPriceButton(_ sender: UIButton) {
     }
 
 
