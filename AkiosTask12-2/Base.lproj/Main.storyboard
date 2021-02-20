@@ -111,7 +111,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="tasExluededPriceTextField" destination="xXe-Dh-Tpq" id="o5X-n5-vgc"/>
+                        <outlet property="taxExluededPriceTextField" destination="xXe-Dh-Tpq" id="ZGL-q1-Q3y"/>
                         <outlet property="taxIncludedPriceLabel" destination="zpw-DZ-oAh" id="2QP-LM-2EN"/>
                         <outlet property="taxPercentageTextField" destination="WiA-BZ-dyc" id="xH4-DJ-q0r"/>
                     </connections>

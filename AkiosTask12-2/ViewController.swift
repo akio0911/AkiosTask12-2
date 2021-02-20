@@ -9,7 +9,7 @@ import UIKit
 
 final class ViewController: UIViewController {
 
-    @IBOutlet weak var tasExluededPriceTextField: UITextField!
+    @IBOutlet weak var taxExluededPriceTextField: UITextField!
     @IBOutlet weak var taxPercentageTextField: UITextField!
     @IBOutlet weak var taxIncludedPriceLabel: UILabel!
 
@@ -19,8 +19,13 @@ final class ViewController: UIViewController {
     }
 
     @IBAction func calculateTaxIncludedPriceButton(_ sender: UIButton) {
+        guard let taxExcludedPrice = Int(taxExluededPriceTextField.text!),
+              let taxPercentage = Int(taxPercentageTextField.text!) else {
+            return
+        }
+        let taxPrice = Int(Double(taxExcludedPrice) * (Double(taxPercentage) / 100))
+        taxIncludedPriceLabel.text = "\(taxPrice + taxExcludedPrice)"
     }
-
 
 }
 
