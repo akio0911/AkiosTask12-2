@@ -38,7 +38,7 @@ final class ViewController: UIViewController {
     }
 }
 
-class TaxRateController: TaxRateProtocol {
+struct TaxRateController: TaxRateProtocol {
     static var shared = TaxRateController()
     var userDefaultsKey: String = "taxPercentage"
 
