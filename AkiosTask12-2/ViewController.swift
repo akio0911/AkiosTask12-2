@@ -21,7 +21,7 @@ final class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        taxRateTextField.text = "\(TaxRateController.shared.getTaxRate())"
+        taxRateTextField.text = String(TaxRateController.shared.getTaxRate())
     }
 
     private func displayTaxIncludedPrice() {
@@ -29,7 +29,7 @@ final class ViewController: UIViewController {
               let taxRate = Float(taxRateTextField.text ?? "") else {
             return
         }
-        taxIncludedPriceLabel.text = "\(TaxRateController.shared.getTaxIncludedPrice(taxExcludedPrice,  taxRate))"
+        taxIncludedPriceLabel.text = String(TaxRateController.shared.getTaxIncludedPrice(taxExcludedPrice,  taxRate))
         TaxRateController.shared.saveTaxRate(taxRate: Int(taxRate))
     }
 
