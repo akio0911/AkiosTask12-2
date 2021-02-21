@@ -16,20 +16,31 @@ final class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        load()
+    }
+
+    func load() {
         if let taxPercentage = UserDefaults.standard.object(forKey: taxPercentageUDKey) as? Int {
             taxPercentageTextField.text = "\(taxPercentage)"
         }
     }
 
-    @IBAction func calculateTaxIncludedPriceButton(_ sender: UIButton) {
+    func display() {
         guard let taxExcludedPrice = Float(taxExluededPriceTextField.text!),
               let taxPercentage = Float(taxPercentageTextField.text!) else {
             return
         }
         let taxIncludedPrice = Int(taxExcludedPrice * (1 + taxPercentage / 100))
         taxIncludedPriceLabel.text = "\(taxIncludedPrice)"
+        save(taxPercentage: taxPercentage)
+    }
+
+    func save(taxPercentage: Float) {
         UserDefaults.standard.setValue(taxPercentage, forKey: taxPercentageUDKey)
     }
 
+    @IBAction func calculateTaxIncludedPriceButton(_ sender: UIButton) {
+        display()
+    }
 }
 
