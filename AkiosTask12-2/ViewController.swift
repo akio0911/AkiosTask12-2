@@ -9,9 +9,9 @@ import UIKit
 
 final class ViewController: UIViewController {
 
-    @IBOutlet weak var taxExluededPriceTextField: UITextField!
-    @IBOutlet weak var taxPercentageTextField: UITextField!
-    @IBOutlet weak var taxIncludedPriceLabel: UILabel!
+    @IBOutlet private weak var taxExluededPriceTextField: UITextField!
+    @IBOutlet private weak var taxPercentageTextField: UITextField!
+    @IBOutlet private weak var taxIncludedPriceLabel: UILabel!
     private let taxPercentageUDKey: String = "taxPercentage"
 
     override func viewDidLoad() {
