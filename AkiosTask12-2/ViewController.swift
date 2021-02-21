@@ -12,10 +12,13 @@ final class ViewController: UIViewController {
     @IBOutlet weak var taxExluededPriceTextField: UITextField!
     @IBOutlet weak var taxPercentageTextField: UITextField!
     @IBOutlet weak var taxIncludedPriceLabel: UILabel!
+    private let taxPercentageUDKey: String = "taxPercentage"
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        if let taxPercentage = UserDefaults.standard.object(forKey: taxPercentageUDKey) as? Int {
+            taxPercentageTextField.text = "\(taxPercentage)"
+        }
     }
 
     @IBAction func calculateTaxIncludedPriceButton(_ sender: UIButton) {
@@ -25,6 +28,7 @@ final class ViewController: UIViewController {
         }
         let taxPrice = Int(Double(taxExcludedPrice) * (Double(taxPercentage) / 100))
         taxIncludedPriceLabel.text = "\(taxPrice + taxExcludedPrice)"
+        UserDefaults.standard.setValue(taxPercentage, forKey: taxPercentageUDKey)
     }
 
 }
