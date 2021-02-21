@@ -7,40 +7,47 @@
 
 import UIKit
 
-final class ViewController: UIViewController {
+protocol TaxRateProtocol {
+    var taxRateUDKey: String { get }
+    func getTaxRate() -> Float
+    func saveToUserDefault(taxRate: Float)
+}
 
+final class ViewController: UIViewController {
     @IBOutlet private weak var taxExluededPriceTextField: UITextField!
     @IBOutlet private weak var taxPercentageTextField: UITextField!
     @IBOutlet private weak var taxIncludedPriceLabel: UILabel!
-    private let taxPercentageUDKey: String = "taxPercentage"
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        load()
+        taxPercentageTextField.text = "\(TaxRateController.shared.getTaxRate())"
     }
 
-    func load() {
-        if let taxPercentage = UserDefaults.standard.object(forKey: taxPercentageUDKey) as? Int {
-            taxPercentageTextField.text = "\(taxPercentage)"
-        }
-    }
-
-    func display() {
-        guard let taxExcludedPrice = Float(taxExluededPriceTextField.text!),
-              let taxPercentage = Float(taxPercentageTextField.text!) else {
+    private func display() {
+        guard let taxExcludedPrice = Float(taxExluededPriceTextField.text ?? ""),
+              let taxPercentage = Float(taxPercentageTextField.text ?? "") else {
             return
         }
         let taxIncludedPrice = Int(taxExcludedPrice * (1 + taxPercentage / 100))
         taxIncludedPriceLabel.text = "\(taxIncludedPrice)"
-        save(taxPercentage: taxPercentage)
-    }
-
-    func save(taxPercentage: Float) {
-        UserDefaults.standard.setValue(taxPercentage, forKey: taxPercentageUDKey)
+        TaxRateController.shared.saveToUserDefault(taxRate: taxPercentage)
     }
 
     @IBAction func calculateTaxIncludedPriceButton(_ sender: UIButton) {
         display()
+    }
+}
+
+class TaxRateController: TaxRateProtocol {
+    static var shared = TaxRateController()
+    var taxRateUDKey: String = "taxPercentage"
+
+    func getTaxRate() -> Float {
+        UserDefaults.standard.float(forKey: taxRateUDKey)
+    }
+
+    func saveToUserDefault(taxRate: Float) {
+        UserDefaults.standard.setValue(taxRate, forKey: taxRateUDKey)
     }
 }
 
