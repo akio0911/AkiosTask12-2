@@ -10,6 +10,7 @@ import UIKit
 protocol TaxRateProtocol {
     var userDefaultsKey: String { get }
     func getTaxRate() -> Int
+    func getTaxIncludedPrice(_ taxExcludedPrice: Float, _ taxRate: Float) -> Int
     func saveToUserDefault(taxRate: Int)
 }
 
@@ -23,18 +24,17 @@ final class ViewController: UIViewController {
         taxRateTextField.text = "\(TaxRateController.shared.getTaxRate())"
     }
 
-    private func calculate() {
+    private func displayTaxIncludedPrice() {
         guard let taxExcludedPrice = Float(taxExluededPriceTextField.text ?? ""),
-              let taxPercentage = Float(taxRateTextField.text ?? "") else {
+              let taxRate = Float(taxRateTextField.text ?? "") else {
             return
         }
-        let taxIncludedPrice = Int(taxExcludedPrice * (1 + taxPercentage / 100))
-        taxIncludedPriceLabel.text = "\(taxIncludedPrice)"
-        TaxRateController.shared.saveToUserDefault(taxRate: Int(taxPercentage))
+        taxIncludedPriceLabel.text = "\(TaxRateController.shared.getTaxIncludedPrice(taxExcludedPrice,  taxRate))"
+        TaxRateController.shared.saveToUserDefault(taxRate: Int(taxRate))
     }
 
     @IBAction func calculateTaxIncludedPriceButton(_ sender: UIButton) {
-        calculate()
+        displayTaxIncludedPrice()
     }
 }
 
@@ -44,6 +44,11 @@ class TaxRateController: TaxRateProtocol {
 
     func getTaxRate() -> Int {
         UserDefaults.standard.integer(forKey: userDefaultsKey)
+    }
+
+    func getTaxIncludedPrice(_ taxExcludedPrice: Float, _ taxRate: Float) -> Int {
+        let taxIncludedPrice = Int(taxExcludedPrice * (1 + taxRate / 100))
+        return taxIncludedPrice
     }
 
     func saveToUserDefault(taxRate: Int) {
