@@ -9,9 +9,9 @@ import UIKit
 
 protocol TaxRateProtocol {
     var userDefaultsKey: String { get }
-    func getTaxRate() -> Int
+    func fetchUserDefault() -> Int
     func getTaxIncludedPrice(_ taxExcludedPrice: Float, _ taxRate: Float) -> Int
-    func saveTaxRate(taxRate: Int)
+    func saveToUserDefualt(taxRate: Int)
 }
 
 final class ViewController: UIViewController {
@@ -21,7 +21,7 @@ final class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        taxRateTextField.text = String(TaxRateController.shared.getTaxRate())
+        taxRateTextField.text = String(TaxRateController.shared.fetchUserDefault())
     }
 
     private func displayTaxIncludedPrice() {
@@ -30,7 +30,7 @@ final class ViewController: UIViewController {
             return
         }
         taxIncludedPriceLabel.text = String(TaxRateController.shared.getTaxIncludedPrice(taxExcludedPrice,  taxRate))
-        TaxRateController.shared.saveTaxRate(taxRate: Int(taxRate))
+        TaxRateController.shared.saveToUserDefualt(taxRate: Int(taxRate))
     }
 
     @IBAction func calculateTaxIncludedPriceButton(_ sender: UIButton) {
@@ -42,7 +42,7 @@ class TaxRateController: TaxRateProtocol {
     static var shared = TaxRateController()
     var userDefaultsKey: String = "taxPercentage"
 
-    func getTaxRate() -> Int {
+    func fetchUserDefault() -> Int {
         UserDefaults.standard.integer(forKey: userDefaultsKey)
     }
 
@@ -51,7 +51,7 @@ class TaxRateController: TaxRateProtocol {
         return taxIncludedPrice
     }
 
-    func saveTaxRate(taxRate: Int) {
+    func saveToUserDefualt(taxRate: Int) {
         UserDefaults.standard.setValue(taxRate, forKey: userDefaultsKey)
     }
 }
