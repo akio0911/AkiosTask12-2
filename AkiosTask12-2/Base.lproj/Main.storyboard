@@ -113,7 +113,7 @@
                     <connections>
                         <outlet property="taxExluededPriceTextField" destination="xXe-Dh-Tpq" id="ZGL-q1-Q3y"/>
                         <outlet property="taxIncludedPriceLabel" destination="zpw-DZ-oAh" id="2QP-LM-2EN"/>
-                        <outlet property="taxPercentageTextField" destination="WiA-BZ-dyc" id="xH4-DJ-q0r"/>
+                        <outlet property="taxRateTextField" destination="WiA-BZ-dyc" id="pW1-NH-ZuA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
