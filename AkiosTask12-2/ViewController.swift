@@ -22,12 +22,12 @@ final class ViewController: UIViewController {
     }
 
     @IBAction func calculateTaxIncludedPriceButton(_ sender: UIButton) {
-        guard let taxExcludedPrice = Int(taxExluededPriceTextField.text!),
-              let taxPercentage = Int(taxPercentageTextField.text!) else {
+        guard let taxExcludedPrice = Float(taxExluededPriceTextField.text!),
+              let taxPercentage = Float(taxPercentageTextField.text!) else {
             return
         }
-        let taxPrice = Int(Double(taxExcludedPrice) * (Double(taxPercentage) / 100))
-        taxIncludedPriceLabel.text = "\(taxPrice + taxExcludedPrice)"
+        let taxIncludedPrice = Int(taxExcludedPrice * (1 + taxPercentage / 100))
+        taxIncludedPriceLabel.text = "\(taxIncludedPrice)"
         UserDefaults.standard.setValue(taxPercentage, forKey: taxPercentageUDKey)
     }
 
