@@ -7,9 +7,8 @@
 
 import UIKit
 
-protocol TaxRateProtocol {
+protocol TaxRateRepositoryProtocol {
     func fetch() -> Int
-    func getTaxIncludedPrice(_ taxExcludedPrice: Float, _ taxRate: Float) -> Int
     func save(taxRate: Int)
 }
 
@@ -18,9 +17,12 @@ final class ViewController: UIViewController {
     @IBOutlet private weak var taxRateTextField: UITextField!
     @IBOutlet private weak var taxIncludedPriceLabel: UILabel!
 
+    private let taxRateRepository: TaxRateRepositoryProtocol = TaxRateRepository()
+    private let priceCalculator = PriceCalculator()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        taxRateTextField.text = String(TaxRateController.shared.fetch())
+        taxRateTextField.text = String(taxRateRepository.fetch())
     }
 
     private func displayTaxIncludedPrice() {
@@ -28,8 +30,8 @@ final class ViewController: UIViewController {
               let taxRate = Float(taxRateTextField.text ?? "") else {
             return
         }
-        taxIncludedPriceLabel.text = String(TaxRateController.shared.getTaxIncludedPrice(taxExcludedPrice,  taxRate))
-        TaxRateController.shared.save(taxRate: Int(taxRate))
+        taxIncludedPriceLabel.text = String(priceCalculator.getTaxIncludedPrice(taxExcludedPrice,  taxRate))
+        taxRateRepository.save(taxRate: Int(taxRate))
     }
 
     @IBAction func calculateTaxIncludedPriceButton(_ sender: UIButton) {
@@ -37,17 +39,11 @@ final class ViewController: UIViewController {
     }
 }
 
-struct TaxRateController: TaxRateProtocol {
-    static var shared = TaxRateController()
-    var userDefaultsKey: String = "taxPercentage"
+struct TaxRateRepository: TaxRateRepositoryProtocol {
+    private let userDefaultsKey = "taxPercentage"
 
     func fetch() -> Int {
         UserDefaults.standard.integer(forKey: userDefaultsKey)
-    }
-
-    func getTaxIncludedPrice(_ taxExcludedPrice: Float, _ taxRate: Float) -> Int {
-        let taxIncludedPrice = Int(taxExcludedPrice * (1 + taxRate / 100))
-        return taxIncludedPrice
     }
 
     func save(taxRate: Int) {
@@ -55,3 +51,9 @@ struct TaxRateController: TaxRateProtocol {
     }
 }
 
+struct PriceCalculator {
+    func getTaxIncludedPrice(_ taxExcludedPrice: Float, _ taxRate: Float) -> Int {
+        let taxIncludedPrice = Int(taxExcludedPrice * (1 + taxRate / 100))
+        return taxIncludedPrice
+    }
+}
